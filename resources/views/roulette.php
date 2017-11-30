@@ -17,7 +17,7 @@
         colorLinks: true,
         iconizeLinks: true,
         renameLinks: true,
-        iconSize: 'large',
+        iconSize: true,
         hide: {
           extra: true,
           sellprice: true
@@ -26,19 +26,104 @@
     </script>
     <script src="//wow.zamimg.com/widgets/power.js"></script>
     <script type="text/javascript">
+
+      let $WowheadRoulette = function () {
+
+        let minItemId = <?=$minItemId?>;
+        let maxItemId = <?=$maxItemId?>;
+
+        let getSubdomainFromHref = function (href) {
+          const regex = /^https?:\/\/(.+?)\.wowhead.com\/.*?$/;
+          let m = regex.exec(href);
+          return m[1];
+        };
+
+        let getItemIdFromHref = function (href) {
+          const regex = /^https?:\/\/.+?\.wowhead.com\/item=(\d+)$/;
+          let m = regex.exec(href);
+          return m[1];
+        };
+
+        let getWowHeadLink = function (subdomain, itemId, iconSize) {
+          let data_wh_icon_added = '';
+          let data_wh_icon_size = '';
+          if (iconSize == 'false' || iconSize == false) {
+            data_wh_icon_added = 'data-wh-icon-added="true"';
+            data_wh_icon_size = 'data-wh-icon-size="tiny"';
+          }
+          else if (iconSize == 'tiny' || iconSize == 'small' || iconSize == 'medium' || iconSize == 'large') {
+            data_wh_icon_added = 'data-wh-icon-added="false"';
+            data_wh_icon_size = 'data-wh-icon-size="' + iconSize + '"';
+          }
+          else {
+            data_wh_icon_added = 'data-wh-icon-added="false"';
+            data_wh_icon_size = 'data-wh-icon-size="tiny"';
+          }
+          return '<a class="itemLink" href="http://' + subdomain + '.wowhead.com/item=' + itemId + '" rel="item=' + itemId + '" ' + data_wh_icon_added + ' ' + data_wh_icon_size + '></a>';
+        };
+
+        let randomWowheadLink = function (subdomain, iconSize) {
+          let itemId = Math.floor(Math.random() * (maxItemId - minItemId)) + minItemId;
+          return getWowHeadLink(subdomain, itemId, iconSize);
+        };
+
+        let replaceCurrentWowheadLink = function (newItemLink) {
+          newItemLink = $(newItemLink).attr('id', 'currentItemLink');
+          console.log(newItemLink);
+          return $("#currentItemLink").replaceWith(newItemLink);
+        };
+
+        let moveWowheadLinkToHistory = function (oldItemLink) {
+          let subdomain = getSubdomainFromHref($(oldItemLink).attr('href'));
+          let itemId = getItemIdFromHref($(oldItemLink).attr('href'));
+          let historicItemLink = getWowHeadLink(subdomain, itemId, 'tiny');
+          $("#itemHistoryRow").prepend('<div class="col-12 col-md-4">' + historicItemLink + '</div>');
+        };
+
+        // 
+        return Object.freeze({
+          minItemId: function () { return minItemId; }(),
+          maxItemId: function () { return maxItemId; }(),
+          getWowHeadLink: getWowHeadLink,
+          randomWowheadLink: randomWowheadLink,
+          replaceCurrentWowheadLink: replaceCurrentWowheadLink,
+          moveWowheadLinkToHistory: moveWowheadLinkToHistory,
+          getSubdomainFromHref: getSubdomainFromHref,
+          getItemIdFromHref: getItemIdFromHref
+        });
+      }();
+
       $(document).ready(function() {
-        $("#randomItem").on('click', function() {
-          let min = <?=$minItemId?>;
-          let max = <?=$maxItemId?>;
-          let newItemId = Math.floor(Math.random() * (max - min)) + min;
-          let newItemLink = '<a id="itemLink" href="http://<?=$wowheadSubdomain?>.wowhead.com/item=' + newItemId + '" rel="item=' + newItemId + '"></a>';
-          let oldItemLink = $("#itemLink").replaceWith(newItemLink);
-          $("#itemHistoryRow").prepend('<div class="col-12 col-sm-4">' + oldItemLink[0].outerHTML + '</div>');
+        
+        $("#randomItem").on('click', function(event) {
+          let newItemLink = $WowheadRoulette.randomWowheadLink('www', 'large');
+          let oldItemLink = $WowheadRoulette.replaceCurrentWowheadLink(newItemLink);
+          $WowheadRoulette.moveWowheadLinkToHistory(oldItemLink);
           // Dip into the WowheadPower library to refresh links after replacement
           $WowheadPower.refreshLinks();
-          return false;
+          event.preventDefault();
         });
+
+        $("#subdomainDropdown > button").on('click', function(event) {
+          let subdomain = event.target.value;
+          $(".itemLink").each(function (key, value) {
+            let itemId = $WowheadRoulette.getItemIdFromHref($(value).attr('href'));
+            if (value.id == 'currentItemLink') {
+              $WowheadRoulette.replaceCurrentWowheadLink(
+                $WowheadRoulette.getWowHeadLink(subdomain, itemId, 'large')
+              );
+            }
+            else {
+              $(value).replaceWith($WowheadRoulette.getWowHeadLink(subdomain, itemId, 'tiny'));
+            }
+          });
+          // Dip into the WowheadPower library to refresh links after replacement
+          $WowheadPower.refreshLinks();
+          event.preventDefault();
+        });
+
       });
+
     </script>
   </head>
   <body>
@@ -52,23 +137,23 @@
         <ul class="navbar-nav mr-auto">
 
           <li class="nav-item">
-            <a id="randomItem" class="nav-link">Random</a>
+            <a id="randomItem" class="nav-link" href="#">Random</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Subdomain
             </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="de" >Deutsch</a>
-              <a class="dropdown-item" href="www">English</a>
-              <a class="dropdown-item" href="ptr">English (PTR)</a>
-              <a class="dropdown-item" href="es" >Español</a>
-              <a class="dropdown-item" href="fr" >Français</a>
-              <a class="dropdown-item" href="it" >Italiano</a>
-              <a class="dropdown-item" href="pt" >Português Brasileiro</a>
-              <a class="dropdown-item" href="ru" >Русский</a>
-              <a class="dropdown-item" href="ko" >한국어</a>
-              <a class="dropdown-item" href="cn" >简体中文</a>
+            <div id="subdomainDropdown" class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <button class="dropdown-item" type="button" value="de">Deutsch</button>
+              <button class="dropdown-item" type="button" value="www">English</button>
+              <button class="dropdown-item" type="button" value="ptr">English (PTR)</button>
+              <button class="dropdown-item" type="button" value="es">Español</button>
+              <button class="dropdown-item" type="button" value="fr">Français</button>
+              <button class="dropdown-item" type="button" value="it">Italiano</button>
+              <button class="dropdown-item" type="button" value="pt">Português Brasileiro</button>
+              <button class="dropdown-item" type="button" value="ru">Русский</button>
+              <button class="dropdown-item" type="button" value="ko">한국어</button>
+              <button class="dropdown-item" type="button" value="cn">简体中文</button>
             </div>
           </li>
         </ul>
@@ -79,7 +164,7 @@
         
         <div class="col mx-auto text-center">
           <div id="itemContainer">
-            <a id="itemLink" href="http://<?=$wowheadSubdomain?>.wowhead.com/item=<?=$itemId?>" rel="item=<?=$itemId?>"></a>
+            <a id="currentItemLink" class="itemLink" href="http://<?=$wowheadSubdomain?>.wowhead.com/item=<?=$itemId?>" rel="item=<?=$itemId?>" data-wh-icon-size="large"></a>
           </div>
         </div>
 

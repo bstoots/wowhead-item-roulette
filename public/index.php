@@ -22,7 +22,6 @@ $container->share('emitter', Zend\Diactoros\Response\SapiEmitter::class);
 $route = new League\Route\RouteCollection($container);
 
 $route->map('GET', '/', 'Bstoots\Wowhead\ItemRoulette\Controllers\RouletteController::get');
-$route->map('GET', '/{wowheadSubdomain}', 'Bstoots\Wowhead\ItemRoulette\Controllers\RouletteController::get');
 
 $response = $route->dispatch($container->get('request'), $container->get('response'));
 

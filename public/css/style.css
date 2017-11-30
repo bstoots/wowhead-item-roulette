@@ -1,11 +1,12 @@
+
 html, body {
   margin: 0px;
   padding: 0px;
+  background-color: black;
+  color: white;
 }
 
 body {
-  background-color: rgba(0, 0, 0);
-  color: white;
 }
 
 div.container-fluid {
@@ -13,26 +14,26 @@ div.container-fluid {
 }
 
 #itemContainer {
-  min-height: 160px;
+  /*min-height: 160px;*/
 }
 
 span.iconlarge {
   background-color: inherit;
   display: block;
-  width: 120px;
-  height: 120px;
+  /*width: 120px;*/
+  /*height: 120px;*/
 }
 
-span.iconlarge ins {
+span.iconlarge > ins {
   background-size: cover;
-  width: 105px;
-  height: 110px;
+  /*width: 105px;*/
+  /*height: 110px;*/
 }
 
-span.iconlarge del {
+span.iconlarge > del {
   background-size: cover;
-  width: 120px;
-  height: 120px;
+  /*width: 120px;*/
+  /*height: 120px;*/
 }
 
 span.iconlarge + span {
