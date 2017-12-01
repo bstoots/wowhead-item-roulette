@@ -4,6 +4,8 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Bstoots\Wowhead\ItemRoulette\Controllers\ErrorController;
+use League\Route\Http\Exception as HttpException;
 
 error_reporting(-1);
 ini_set('display_errors', 'On');
@@ -23,6 +25,26 @@ $route = new League\Route\RouteCollection($container);
 
 $route->map('GET', '/', 'Bstoots\Wowhead\ItemRoulette\Controllers\RouletteController::get');
 
-$response = $route->dispatch($container->get('request'), $container->get('response'));
-
-$container->get('emitter')->emit($response);
+try {
+  $response = $route->dispatch($container->get('request'), $container->get('response'));
+}
+catch (HttpException $httpException) {
+  // HTTP 400 Client Errors
+  if ($httpException->getStatusCode() >= 400 && $httpException->getStatusCode() < 500) {
+    $response = (new ErrorController)->client($container->get('response'));
+  }
+  // HTTP 500 Server Errors
+  else if ($httpException->getStatusCode() >= 500 && $httpException->getStatusCode() < 600) {
+    $response = (new ErrorController)->server($container->get('response'));
+  }
+  // Anything else
+  else {
+    $response = (new ErrorController)->default($container->get('response'));
+  }
+}
+catch (\Exception $e) {
+  $response = (new ErrorController)->default($container->get('response'));
+}
+finally {
+  $container->get('emitter')->emit($response);
+}
