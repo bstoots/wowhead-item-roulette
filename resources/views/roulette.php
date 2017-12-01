@@ -57,7 +57,7 @@
               );
             }
             else {
-              $(value).replaceWith($WowheadRoulette.getWowHeadLink($WowheadRoulette.currentSubdomain, itemId, 'false'));
+              $(value).replaceWith($WowheadRoulette.getWowHeadLink($WowheadRoulette.currentSubdomain, itemId, 'tiny'));
             }
           });
           // Dip into the WowheadPower library to refresh links after replacement
