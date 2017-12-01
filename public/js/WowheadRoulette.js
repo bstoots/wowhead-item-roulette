@@ -2,8 +2,9 @@
 
 let $WowheadRoulette = function () {
 
-  let minItemId = 77;
-  let maxItemId = 56000;
+  let currentSubdomain;
+  let minItemId;
+  let maxItemId;
 
   let getSubdomainFromHref = function (href) {
     const regex = /^https?:\/\/(.+?)\.wowhead.com\/.*?$/;
@@ -36,7 +37,7 @@ let $WowheadRoulette = function () {
   };
 
   let randomWowheadLink = function (subdomain, iconSize) {
-    let itemId = Math.floor(Math.random() * (maxItemId - minItemId)) + minItemId;
+    let itemId = Math.floor(Math.random() * (this.maxItemId - this.minItemId)) + this.minItemId;
     return getWowHeadLink(subdomain, itemId, iconSize);
   };
 
@@ -49,14 +50,15 @@ let $WowheadRoulette = function () {
     let subdomain = getSubdomainFromHref($(oldItemLink).attr('href'));
     let itemId = getItemIdFromHref($(oldItemLink).attr('href'));
     let historicItemLink = getWowHeadLink(subdomain, itemId, 'tiny');
-    $("#itemHistoryRow").prepend('<div class="col-12 col-md-4">' + historicItemLink + '</div>');
+    $("#itemHistoryRow").prepend('<div class="col-12 col-sm-6 col-md-4 col-xl-3">' + historicItemLink + '</div>');
   };
 
   // 
-  return Object.freeze({
-    minItemId: function () { return minItemId; }(),
-    maxItemId: function () { return maxItemId; }(),
-    getWowHeadLink: getWowHeadLink,
+  return Object.seal({
+    currentSubdomain: currentSubdomain,
+    minItemId:        minItemId,
+    maxItemId:        maxItemId,
+    getWowHeadLink:    getWowHeadLink,
     randomWowheadLink: randomWowheadLink,
     replaceCurrentWowheadLink: replaceCurrentWowheadLink,
     moveWowheadLinkToHistory: moveWowheadLinkToHistory,

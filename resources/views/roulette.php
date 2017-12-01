@@ -26,33 +26,48 @@
     </script>
     <script src="//wow.zamimg.com/widgets/power.js"></script>
     <script src="js/WowheadRoulette.js"></script>
-    <script type="text/javascript">
+    <script>
+
+      // Initialize via templated data
+      $WowheadRoulette.currentSubdomain = '<?=$wowheadSubdomain?>';
+      $WowheadRoulette.minItemId = <?=$minItemId?>;
+      $WowheadRoulette.maxItemId = <?=$maxItemId?>;
+
       $(document).ready(function() {
+        // 
         $("#randomItem").on('click', function(event) {
-          let newItemLink = $WowheadRoulette.randomWowheadLink('www', 'large');
+          // Cheat a bit here and use the same subdomain as the currentItemLink.
+          let newItemLink = $WowheadRoulette.randomWowheadLink($WowheadRoulette.currentSubdomain, 'large');
           let oldItemLink = $WowheadRoulette.replaceCurrentWowheadLink(newItemLink);
           $WowheadRoulette.moveWowheadLinkToHistory(oldItemLink);
           // Dip into the WowheadPower library to refresh links after replacement
           $WowheadPower.refreshLinks();
           event.preventDefault();
         });
+        // 
         $("#subdomainDropdown > button").on('click', function(event) {
-          let subdomain = event.target.value;
+          $WowheadRoulette.currentSubdomain = event.target.value;
           $(".itemLink").each(function (key, value) {
             let itemId = $WowheadRoulette.getItemIdFromHref($(value).attr('href'));
             if (value.id == 'currentItemLink') {
               $WowheadRoulette.replaceCurrentWowheadLink(
-                $WowheadRoulette.getWowHeadLink(subdomain, itemId, 'large')
+                $WowheadRoulette.getWowHeadLink($WowheadRoulette.currentSubdomain, itemId, 'large')
               );
             }
             else {
-              $(value).replaceWith($WowheadRoulette.getWowHeadLink(subdomain, itemId, 'tiny'));
+              $(value).replaceWith($WowheadRoulette.getWowHeadLink($WowheadRoulette.currentSubdomain, itemId, 'tiny'));
             }
           });
           // Dip into the WowheadPower library to refresh links after replacement
           $WowheadPower.refreshLinks();
           event.preventDefault();
         });
+
+        // Initialize the current item
+        $WowheadRoulette.replaceCurrentWowheadLink(
+          $WowheadRoulette.randomWowheadLink($WowheadRoulette.currentSubdomain, 'large')
+        );
+
       });
     </script>
   </head>
@@ -94,7 +109,7 @@
         
         <div class="col mx-auto text-center">
           <div id="itemContainer">
-            <a id="currentItemLink" class="itemLink" href="http://<?=$wowheadSubdomain?>.wowhead.com/item=<?=$itemId?>" rel="item=<?=$itemId?>" data-wh-icon-size="large"></a>
+            <a id="currentItemLink"></a>
           </div>
         </div>
 

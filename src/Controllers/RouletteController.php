@@ -13,18 +13,13 @@ class RouletteController extends BaseController {
       $this->templates->render(
         'roulette', 
         [
+          'wowheadSubdomain' => $this->determineWowheadSubdomain($args),
           'minItemId'        => Config::MIN_ITEM_ID,
           'maxItemId'        => Config::MAX_ITEM_ID,
-          'wowheadSubdomain' => $this->determineWowheadSubdomain($args),
-          'itemId'           => $this->determineItemId($args),
         ]
       )
     );
     return $response->withStatus(200);
-  }
-
-  protected function determineItemId(array $args) {
-    return rand(Config::MIN_ITEM_ID, Config::MAX_ITEM_ID);
   }
 
   protected function determineWowheadSubdomain(array $args) {
