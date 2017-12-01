@@ -6,34 +6,32 @@ html, body {
   color: white;
 }
 
-body {
-}
-
 div.container-fluid {
   background-color: rgb(36, 36, 36);
 }
 
 #itemContainer {
-  /*min-height: 160px;*/
+  min-height: 160px;
 }
 
 span.iconlarge {
   background-color: inherit;
   display: block;
-  /*width: 120px;*/
-  /*height: 120px;*/
+  width: 120px;
+  height: 120px;
 }
 
 span.iconlarge > ins {
   background-size: cover;
-  /*width: 105px;*/
-  /*height: 110px;*/
+  border-radius: 25px;
+  width: 105px;
+  height: 110px;
 }
 
 span.iconlarge > del {
   background-size: cover;
-  /*width: 120px;*/
-  /*height: 120px;*/
+  width: 120px;
+  height: 120px;
 }
 
 span.iconlarge + span {
