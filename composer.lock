@@ -419,45 +419,6 @@
     ],
     "packages-dev": [
         {
-            "name": "bstoots/yocto-controller",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/bstoots/yocto-controller.git",
-                "reference": "c069d76caf0c7f58ecce67501e2117cf7c7a7f75"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/bstoots/yocto-controller/zipball/c069d76caf0c7f58ecce67501e2117cf7c7a7f75",
-                "reference": "c069d76caf0c7f58ecce67501e2117cf7c7a7f75",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.5.0 || ^7.0",
-                "psr/http-message": "^1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.8.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Bstoots\\YoctoController\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Brian Stoots",
-                    "email": "bstoots@gmail.com"
-                }
-            ],
-            "time": "2016-10-05 14:10:09"
-        },
-        {
             "name": "doctrine/instantiator",
             "version": "1.0.5",
             "source": {
