@@ -108,15 +108,12 @@
     </nav>
     <div class="container-fluid">
       <div class="row">
-        
         <div class="col mx-auto text-center">
           <div id="itemContainer">
             <a id="currentItemLink"></a>
           </div>
         </div>
-
       </div>
-
       <div class="row">
         <div class="col-12 mx-auto text-center">
           <hr class="my-2">
@@ -124,9 +121,7 @@
           <hr class="my-2">
         </div>
       </div>
-
       <div id="itemHistoryRow" class="row"></div>
-
     </div>
   </body>
 </html>
