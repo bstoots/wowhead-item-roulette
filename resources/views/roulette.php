@@ -43,6 +43,18 @@
           $WowheadRoulette.moveWowheadLinkToHistory(oldItemLink);
           // Dip into the WowheadPower library to refresh links after replacement
           $WowheadPower.refreshLinks();
+          // @TODO - Something like this would be nice but refreshLinks() doesn't return 
+          //         a Deferred or Promise or Thenable.  I'll need to dig into the WH libs 
+          //         more to see what my options are.  The goal is to avoid showing undefined
+          //         items to users and just handle it internally.
+          // $.when($WowheadPower.refreshLinks()).then(function () {
+          //   console.log($("#currentItemLink").hasClass("qundefined"));
+          //   if ($("#currentItemLink").hasClass("qundefined")) {
+          //     console.log('got undefined, triggering click event again');
+          //     // Set a maximum recursion limit on this.  Otherwise we'll be in trouble.
+          //     $("#randomItem").trigger('click');
+          //   }
+          // });
           event.preventDefault();
         });
         // 
