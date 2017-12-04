@@ -34,13 +34,13 @@ abstract class Config {
   ];
 
   /**
-   * @var  integer  Lowest valid Wowhead item ID
+   * @var  integer  Lowest Wowhead item ID
    */
   const MIN_ITEM_ID = 77;
 
   /**
-   * @var  integer  Highest valid Wowhead item ID
+   * @var  integer  Highest Wowhead item ID
    */
-  const MAX_ITEM_ID = 56000;
+  const MAX_ITEM_ID = 90000;
 
 }
