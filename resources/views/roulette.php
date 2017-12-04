@@ -108,7 +108,7 @@
     </nav>
     <div class="container-fluid">
       <div class="row">
-        <div class="col mx-auto text-center">
+        <div class="col-12 mx-auto text-center">
           <div id="itemContainer">
             <a id="currentItemLink"></a>
           </div>
