@@ -65,7 +65,7 @@ let $WowheadRoulette = function () {
       data_wh_icon_added = 'data-wh-icon-added="false"';
       data_wh_icon_size = 'data-wh-icon-size="tiny"';
     }
-    return '<a class="itemLink" href="http://' + subdomain + '.wowhead.com/item=' + itemId + '" rel="item=' + itemId + '" ' + data_wh_icon_added + ' ' + data_wh_icon_size + '></a>';
+    return '<a class="itemLink" target="wowhead" href="http://' + subdomain + '.wowhead.com/item=' + itemId + '" rel="item=' + itemId + '" ' + data_wh_icon_added + ' ' + data_wh_icon_size + '></a>';
   };
 
   /**
@@ -101,15 +101,35 @@ let $WowheadRoulette = function () {
     $("#itemHistoryRow").prepend('<div class="col-12 col-sm-6 col-md-4 col-xl-3">' + historicItemLink + '</div>');
   };
 
+  /**
+   * Handles updating existing links for a new subdomain
+   * @param  string  Wowhead subdomain: www, ptr, de.
+   * @return void
+   */
+  let updateWowheadSubdomain = function (subdomain) {
+    $(".itemLink").each(function (key, value) {
+      let itemId = getItemIdFromUrl($(value).attr('href'));
+      if (value.id == 'currentItemLink') {
+        replaceCurrentWowheadLink(
+          getWowHeadLink(subdomain, itemId, 'large')
+        );
+      }
+      else {
+        $(value).replaceWith(getWowHeadLink(subdomain, itemId, 'tiny'));
+      }
+    });
+  }
+
   // Public interface for $WowheadRoulette object.  Object is seal()ed to prevent misuse.
   return Object.seal({
-    currentSubdomain: currentSubdomain,
+    currentSubdomain:          currentSubdomain,
     minItemId:                 minItemId,
     maxItemId:                 maxItemId,
     getWowHeadLink:            getWowHeadLink,
     randomWowheadLink:         randomWowheadLink,
     replaceCurrentWowheadLink: replaceCurrentWowheadLink,
     moveWowheadLinkToHistory:  moveWowheadLinkToHistory,
+    updateWowheadSubdomain:    updateWowheadSubdomain,
     getSubdomainFromUrl:       getSubdomainFromUrl,
     getItemIdFromUrl:          getItemIdFromUrl
   });

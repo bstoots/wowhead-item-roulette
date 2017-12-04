@@ -13,7 +13,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-    <!--  -->
+    <!-- Configures Wowhead tooltips, details: http://www.wowhead.com/tooltips -->
     <script>
       var whTooltips = {
         colorLinks: true,
@@ -29,9 +29,8 @@
     <script src="//wow.zamimg.com/widgets/power.js"></script>
     <script src="/js/WowheadRoulette.js"></script>
     <script>
-
       // Initialize via templated data
-      $WowheadRoulette.currentSubdomain = '<?=$wowheadSubdomain?>';
+      $WowheadRoulette.currentSubdomain = '<?=$currentSubdomain?>';
       $WowheadRoulette.minItemId = <?=$minItemId?>;
       $WowheadRoulette.maxItemId = <?=$maxItemId?>;
 
@@ -49,59 +48,53 @@
         // 
         $("#subdomainDropdown > button").on('click', function(event) {
           $WowheadRoulette.currentSubdomain = event.target.value;
-          $(".itemLink").each(function (key, value) {
-            let itemId = $WowheadRoulette.getItemIdFromUrl($(value).attr('href'));
-            if (value.id == 'currentItemLink') {
-              $WowheadRoulette.replaceCurrentWowheadLink(
-                $WowheadRoulette.getWowHeadLink($WowheadRoulette.currentSubdomain, itemId, 'large')
-              );
-            }
-            else {
-              $(value).replaceWith($WowheadRoulette.getWowHeadLink($WowheadRoulette.currentSubdomain, itemId, 'tiny'));
-            }
-          });
-          // Dip into the WowheadPower library to refresh links after replacement
+          $WowheadRoulette.updateWowheadSubdomain(event.target.value);
           $WowheadPower.refreshLinks();
+          // Get a little sneaky and update the URL via replaceState().  We do this so that 
+          // subdomain changes are reflected in the URL and also handled properly when users 
+          // click the Wowhead Item Roulette or Reset links.
+          window.history.replaceState({"wowheadSubdomain": $WowheadRoulette.currentSubdomain}, "", $WowheadRoulette.currentSubdomain);
           event.preventDefault();
         });
+        // 
+        window.onpopstate = function(event) {
+          if (event.state && event.state.wowheadSubdomain) {
+            $WowheadRoulette.currentSubdomain = event.state.wowheadSubdomain;
+            $WowheadRoulette.updateWowheadSubdomain(event.state.wowheadSubdomain);
+            $WowheadPower.refreshLinks();
+          }
+        };
 
+        // Initialize the initial state from history so we have access to wowheadSubdomain from the beginning
+        $WowheadRoulette.updateWowheadSubdomain($WowheadRoulette.currentSubdomain);
+        window.history.replaceState({"wowheadSubdomain": $WowheadRoulette.currentSubdomain}, "", $WowheadRoulette.currentSubdomain);
         // Initialize the current item
         $WowheadRoulette.replaceCurrentWowheadLink(
           $WowheadRoulette.randomWowheadLink($WowheadRoulette.currentSubdomain, 'large')
         );
-
       });
     </script>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="/">Wowhead Item Roulette</a>
+      <a id="randomItem" class="navbar-brand" href="" title="Click for a new item">Wowhead Item Roulette</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-
-          <li class="nav-item">
-            <a id="randomItem" class="nav-link" href="#">Random</a>
-          </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Subdomain
             </a>
             <div id="subdomainDropdown" class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <button class="dropdown-item" type="button" value="de">Deutsch</button>
-              <button class="dropdown-item" type="button" value="www">English</button>
-              <button class="dropdown-item" type="button" value="ptr">English (PTR)</button>
-              <button class="dropdown-item" type="button" value="es">Español</button>
-              <button class="dropdown-item" type="button" value="fr">Français</button>
-              <button class="dropdown-item" type="button" value="it">Italiano</button>
-              <button class="dropdown-item" type="button" value="pt">Português Brasileiro</button>
-              <button class="dropdown-item" type="button" value="ru">Русский</button>
-              <button class="dropdown-item" type="button" value="ko">한국어</button>
-              <button class="dropdown-item" type="button" value="cn">简体中文</button>
+              <?php foreach($allSubdomains as $subdomain => $subdomainName): ?>
+              <button class="dropdown-item" type="button" value="<?=$subdomain?>"><?=$subdomainName?></button>
+              <?php endforeach ?>
             </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="" onclick="location.reload();">Reset</a>
           </li>
         </ul>
       </div>
