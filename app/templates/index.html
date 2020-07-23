@@ -29,21 +29,33 @@
       <script src="https://wow.zamimg.com/widgets/power.js"></script>
       <link href="{{ url_for('static', path='/css/style.css') }}" rel="stylesheet">
       <script src="{{ url_for('static', path='/js/WowheadRoulette.js') }}"></script>
+      <script type="module" src="{{ url_for('static', path='/js/main.js') }}"></script>
       <script>
         // Initialize via templated data
         $WowheadRoulette.currentSubdomain = 'en';
-        $WowheadRoulette.minItemId = 124500;
+        $WowheadRoulette.minItemId = 174450;
         $WowheadRoulette.maxItemId = 174500;
   
+        // if (document.readyState != 'loading') {
+        //     init();
+        // }
+        // else {
+        //     document.addEventListener('DOMContentLoaded', init);
+        // }
+
+        // currentItemLink
+        // let d = new DomManipulate('#currentItemLink');
+        // d.onReady(() => { d.write("Test Text") });
+
         $(document).ready(function() {
           // 
-          $("#randomItem").on('click', function(event) {
+        //   $("#randomItem").on('click', function(event) {
             // Cheat a bit here and use the same subdomain as the currentItemLink.
-            let newItemLink = $WowheadRoulette.randomWowheadLink($WowheadRoulette.currentSubdomain, 'large');
-            let oldItemLink = $WowheadRoulette.replaceCurrentWowheadLink(newItemLink);
-            $WowheadRoulette.moveWowheadLinkToHistory(oldItemLink);
+            // let newItemLink = $WowheadRoulette.randomWowheadLink($WowheadRoulette.currentSubdomain, 'large');
+            // let oldItemLink = $WowheadRoulette.replaceCurrentWowheadLink(newItemLink);
+            // $WowheadRoulette.moveWowheadLinkToHistory(oldItemLink);
             // Dip into the WowheadPower library to refresh links after replacement
-            $WowheadPower.refreshLinks();
+            // $WowheadPower.refreshLinks();
             // @TODO - Something like this would be nice but refreshLinks() doesn't return 
             //         a Deferred or Promise or Thenable.  I'll need to dig into the WH libs 
             //         more to see what my options are.  The goal is to avoid showing undefined
@@ -56,8 +68,8 @@
             //     $("#randomItem").trigger('click');
             //   }
             // });
-            event.preventDefault();
-          });
+            // event.preventDefault();
+        //   });
           // 
           $("#subdomainDropdown > button").on('click', function(event) {
             $WowheadRoulette.currentSubdomain = event.target.value;
