@@ -17,8 +17,8 @@ class WowheadRoulette {
         this.nextItemButton = new NextItemButton(this.nextItemButtonSelector);
         // 
         this.subdomain = subdomain;
-        this.minItemId = 120000;
-        this.maxItemId = 180000;
+        this.minItemId = 174480;
+        this.maxItemId = 174500;
         // Maximum number of random items to get in a row when encountering undefined items
         this.maxUndefinedIterations = 100;
     }
