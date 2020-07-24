@@ -1,4 +1,3 @@
-// import { Wowhead } from './Wowhead.js';
 
 class NextItemButton {
 
@@ -6,22 +5,17 @@ class NextItemButton {
         // @TODO - Make sure querySelector returned something
         this.element = document.querySelector(selector);
         this.clickHandler = (event) => {
+            event.preventDefault();
             console.debug('Default NextItemButton Click Handler')
         };
     }
 
     setClickHandler (handler) {
         this.clickHandler = handler;
-        return this;
     }
 
-    bind () {
-        this.element.addEventListener('click', function(event) {
-            // console.debug(this)
-            this.clickHandler(event);
-            event.preventDefault();
-        }.bind(this));
-        return this;
+    registerClickHandler () {
+        this.element.addEventListener('click', this.clickHandler);
     }
 
 }

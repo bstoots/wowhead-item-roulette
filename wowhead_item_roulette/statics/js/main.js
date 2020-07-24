@@ -1,37 +1,13 @@
-import { NextItemButton } from './NextItemButton.js';
-import { Wowhead } from './Wowhead.js';
+import { WowheadRoulette } from './WowheadRoulette.js';
 
-const wowhead = new Wowhead();
+const wowheadRoulette = new WowheadRoulette();
 
-// Define functionality of the button that will get the next Wowhead item
-let nextItemButton = new NextItemButton('#randomItem');
-nextItemButton.setClickHandler(function (event) {
-    let itemId;
-    (async () => {
-        itemId = wowhead.getRandomItemId();
-        for (i = 0; i < 100; i++) {
-            if (await wowhead.doesIdExistInXmlFeed(itemId)) {
-                break;
-            }
-            itemId = wowhead.getRandomItemId();
-        }
-        // console.log(itemId);
-        let newItemLink = wowhead.getWowHeadLink('en', itemId, 'large');
-        let oldItemLink = wowhead.replaceCurrentWowheadLink(newItemLink);
-        wowhead.moveWowheadLinkToHistory(oldItemLink);
-        $WowheadPower.refreshLinks();
-    })().catch(err => {
-        console.error(err);
-    });
-});
-
-let init = () => {
-    nextItemButton.bind();
-};
-
+// Once the DOM is in place start the client-side app
 if (document.readyState === "complete") {
-    init();
+    wowheadRoulette.start();
 }
 else {
-    document.addEventListener("DOMContentLoaded", init);
+    document.addEventListener("DOMContentLoaded", (event) => {
+        wowheadRoulette.start(event)
+    });
 }

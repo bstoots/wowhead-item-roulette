@@ -40,7 +40,6 @@ class Wowhead {
     async doesIdExistInXmlFeed (itemId) {
         let response = await fetch(`/item_id/${itemId}/exists`);
         let data = await response.json();
-        // console.log(data.exists);
         return data.exists;
     }
 
