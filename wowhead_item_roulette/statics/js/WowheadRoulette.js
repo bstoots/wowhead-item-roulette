@@ -12,14 +12,14 @@ class WowheadRoulette {
      * constructor
      * @param {string} nextItemButtonSelector Selector that when clicked will get a new item
      */
-    constructor ({domain = 'www', nextItemButtonSelector}) {
+    constructor ({subdomain = 'www', nextItemButtonSelector}) {
         // Initialize Wowhead util instance
         this.wowhead = new Wowhead();
         // Initialize NextItemButton instance
         this.nextItemButtonSelector = nextItemButtonSelector;
         this.nextItemButton = new NextItemButton(this.nextItemButtonSelector);
         // Maximum number of random items to get in a row when encountering undefined items
-        this.domain = domain;
+        this.subdomain = subdomain;
         this.maxUndefinedIterations = 100;
     }
 
@@ -61,7 +61,7 @@ class WowheadRoulette {
         if (i === this.maxUndefinedIterations) {
             throw new Error("Maximum number of undefined items encountered")
         }
-        let newItemLink = this.wowhead.getWowHeadLink(this.domain, itemId, 'large');
+        let newItemLink = this.wowhead.getWowHeadLink(this.subdomain, itemId, 'large');
         return this.wowhead.replaceCurrentWowheadLink(newItemLink);
     }
 
