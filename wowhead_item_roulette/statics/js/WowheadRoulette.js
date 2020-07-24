@@ -6,7 +6,7 @@ class WowheadRoulette {
     constructor () {
         // Initialize Wowhead util instance
         this.wowhead = new Wowhead();
-        // Initialize 
+        // Initialize NextItemButton instance
         this.nextItemButtonSelector = '#randomItem';
         this.nextItemButton = new NextItemButton(this.nextItemButtonSelector);
     }
