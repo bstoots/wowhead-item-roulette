@@ -1,6 +1,9 @@
 import { WowheadRoulette } from './WowheadRoulette.js';
 
-const wowheadRoulette = new WowheadRoulette();
+const wowheadRoulette = new WowheadRoulette({
+    domain: 'www',
+    nextItemButtonSelector: '#randomItem'
+});
 
 // Once the DOM is in place start the client-side app
 if (document.readyState === "complete") {
