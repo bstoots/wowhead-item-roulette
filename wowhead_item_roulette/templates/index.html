@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <!-- Custom styling for our application -->
-    <link href="{{ url_for('static', path='/css/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('statics', path='/css/style.css') }}" rel="stylesheet">
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
@@ -27,14 +27,13 @@
         };
       </script>
       <script src="https://wow.zamimg.com/widgets/power.js"></script>
-      <link href="{{ url_for('static', path='/css/style.css') }}" rel="stylesheet">
-      <script src="{{ url_for('static', path='/js/WowheadRoulette.js') }}"></script>
-      <script type="module" src="{{ url_for('static', path='/js/main.js') }}"></script>
+      <!-- <script src="{{ url_for('statics', path='/js/WowheadRoulette.js') }}"></script> -->
+      <script type="module" src="{{ url_for('statics', path='/js/main.js') }}"></script>
       <script>
         // Initialize via templated data
-        $WowheadRoulette.currentSubdomain = 'en';
-        $WowheadRoulette.minItemId = 174450;
-        $WowheadRoulette.maxItemId = 174500;
+        // $WowheadRoulette.currentSubdomain = 'en';
+        // $WowheadRoulette.minItemId = 174450;
+        // $WowheadRoulette.maxItemId = 174500;
   
         // if (document.readyState != 'loading') {
         //     init();
@@ -71,32 +70,32 @@
             // event.preventDefault();
         //   });
           // 
-          $("#subdomainDropdown > button").on('click', function(event) {
-            $WowheadRoulette.currentSubdomain = event.target.value;
-            $WowheadRoulette.updateWowheadSubdomain(event.target.value);
-            $WowheadPower.refreshLinks();
-            // Get a little sneaky and update the URL via replaceState().  We do this so that 
-            // subdomain changes are reflected in the URL and also handled properly when users 
-            // click the Wowhead Item Roulette or Reset links.
-            window.history.replaceState({"wowheadSubdomain": $WowheadRoulette.currentSubdomain}, "", $WowheadRoulette.currentSubdomain);
-            event.preventDefault();
-          });
+        //   $("#subdomainDropdown > button").on('click', function(event) {
+        //     $WowheadRoulette.currentSubdomain = event.target.value;
+        //     $WowheadRoulette.updateWowheadSubdomain(event.target.value);
+        //     $WowheadPower.refreshLinks();
+        //     // Get a little sneaky and update the URL via replaceState().  We do this so that 
+        //     // subdomain changes are reflected in the URL and also handled properly when users 
+        //     // click the Wowhead Item Roulette or Reset links.
+        //     window.history.replaceState({"wowheadSubdomain": $WowheadRoulette.currentSubdomain}, "", $WowheadRoulette.currentSubdomain);
+        //     event.preventDefault();
+        //   });
           // 
-          window.onpopstate = function(event) {
-            if (event.state && event.state.wowheadSubdomain) {
-              $WowheadRoulette.currentSubdomain = event.state.wowheadSubdomain;
-              $WowheadRoulette.updateWowheadSubdomain(event.state.wowheadSubdomain);
-              $WowheadPower.refreshLinks();
-            }
-          };
+        //   window.onpopstate = function(event) {
+        //     if (event.state && event.state.wowheadSubdomain) {
+        //       $WowheadRoulette.currentSubdomain = event.state.wowheadSubdomain;
+        //       $WowheadRoulette.updateWowheadSubdomain(event.state.wowheadSubdomain);
+        //       $WowheadPower.refreshLinks();
+        //     }
+        //   };
   
           // Initialize the initial state from history so we have access to wowheadSubdomain from the beginning
-          $WowheadRoulette.updateWowheadSubdomain($WowheadRoulette.currentSubdomain);
-          window.history.replaceState({"wowheadSubdomain": $WowheadRoulette.currentSubdomain}, "", $WowheadRoulette.currentSubdomain);
-          // Initialize the current item
-          $WowheadRoulette.replaceCurrentWowheadLink(
-            $WowheadRoulette.randomWowheadLink($WowheadRoulette.currentSubdomain, 'large')
-          );
+        //   $WowheadRoulette.updateWowheadSubdomain($WowheadRoulette.currentSubdomain);
+        //   window.history.replaceState({"wowheadSubdomain": $WowheadRoulette.currentSubdomain}, "", $WowheadRoulette.currentSubdomain);
+        //   // Initialize the current item
+        //   $WowheadRoulette.replaceCurrentWowheadLink(
+        //     $WowheadRoulette.randomWowheadLink($WowheadRoulette.currentSubdomain, 'large')
+        //   );
         });
       </script>
 </head>
@@ -114,7 +113,7 @@
                     </a>
                     <div id="subdomainDropdown" class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <!-- <?php foreach($allSubdomains as $subdomain => $subdomainName): ?> -->
-                        <button class="dropdown-item" type="button" value="en">en</button>
+                        <button class="dropdown-item" type="button" value="en">English</button>
                         <!-- <?php endforeach ?> -->
                     </div>
                 </li>

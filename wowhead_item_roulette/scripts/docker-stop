@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+# TODO
+# Parse input var: remove
+# Make sure docker exists
+
+docker stop wowhead-item-roulette

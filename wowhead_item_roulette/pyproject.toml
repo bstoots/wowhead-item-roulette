@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "app"
+name = "wowhead_item_roulette"
 version = "0.1.0"
 description = ""
 authors = ["Brian Stoots <brian@stoots.me>"]
@@ -9,6 +9,9 @@ python = "^3.8"
 starlette = "^0.13.6"
 aiofiles = "^0.5.0"
 jinja2 = "^2.11.2"
+requests = "^2.24.0"
+untangle = "^1.1.1"
+pydash = "^4.8.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

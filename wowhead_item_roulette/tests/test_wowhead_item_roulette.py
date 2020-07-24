@@ -1,4 +1,4 @@
-from app import __version__
+from wowhead_item_roulette import __version__
 
 
 def test_version():

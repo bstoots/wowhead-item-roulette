@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -e
+
+# TODO
+# Parse input var: docker image version, external port
+# Make sure docker exists
+
+SCRIPTS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+APP_DIR=`realpath "$SCRIPTS_DIR/.."`
+
+docker run -d \
+  --name wowhead-item-roulette \
+  -p 80:80 \
+  -e MODULE_NAME="src.wowhead_item_roulette.main" \
+  -v $APP_DIR:/app \
+  bstoots/wowhead-item-roulette:latest \
+  /start-reload.sh

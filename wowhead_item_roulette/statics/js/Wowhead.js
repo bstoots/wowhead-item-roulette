@@ -8,9 +8,40 @@ Functions
 
 class Wowhead {
 
-    constructor () {
-        this.minItemId = 174490;
-        this.maxItemId = 174500;
+    constructor (
+        subdomain = "www",
+        minItemId = 120000,
+        maxItemId = 180000
+    ) {
+        this.subdomain = subdomain;
+        this.minItemId = minItemId;
+        this.maxItemId = maxItemId;
+    }
+
+    getSubdomains () {
+        return {
+            'de' : 'Deutsch',
+            'www': 'English',
+            'ptr': 'English (PTR)',
+            'es' : 'Español',
+            'fr' : 'Français',
+            'it' : 'Italiano',
+            'pt' : 'Português Brasileiro',
+            'ru' : 'Русский',
+            'ko' : '한국어',
+            'cn' : '简体中文',
+        }
+    }
+
+    getRandomItemId (defaultMinItemId, defaultMaxItemId) {
+        return Math.floor(Math.random() * (this.maxItemId - this.minItemId)) + this.minItemId;
+    }
+
+    async doesIdExistInXmlFeed (itemId) {
+        let response = await fetch(`/item_id/${itemId}/exists`);
+        let data = await response.json();
+        // console.log(data.exists);
+        return data.exists;
     }
 
     /**
@@ -63,7 +94,7 @@ class Wowhead {
      * @return string             String containing a Wowhead link
      */
     randomWowheadLink (subdomain, iconSize) {
-        let itemId = Math.floor(Math.random() * (this.maxItemId - this.minItemId)) + this.minItemId;
+        let itemId = this.getRandomItemId();
         return this.getWowHeadLink(subdomain, itemId, iconSize);
     }
 

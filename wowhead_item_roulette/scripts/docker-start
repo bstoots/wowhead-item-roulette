@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -e
+
+# TODO
+# Parse input var: docker image version, external port, auto-reload
+# Make sure docker exists
+
+docker run -d \
+  --name wowhead-item-roulette \
+  -p 80:80 \
+  -e MODULE_NAME="src.wowhead_item_roulette.main" \
+  bstoots/wowhead-item-roulette:latest
+
+# docker run -d \
+#   --name wowhead-item-roulette \
+#   -p 80:80 \
+#   -e MODULE_NAME="src.wowhead_item_roulette.main" \
+#   -v $(pwd)/app:/app \
+#   bstoots/wowhead-item-roulette:latest \
+#   /start-reload.sh
