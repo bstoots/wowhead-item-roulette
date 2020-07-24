@@ -15,6 +15,7 @@ async def index(request):
 
 
 async def item_id_exists(request):
+    # @TODO - Also accept subdomain as part of this request
     response = requests.get(
         "https://www.wowhead.com/item={}&xml"
         .format(request.path_params['item_id'])
