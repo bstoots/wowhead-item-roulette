@@ -1,5 +1,6 @@
 import { WowheadRoulette } from './WowheadRoulette.js';
 
+// WowheadRoulette configuration
 const wowheadRoulette = new WowheadRoulette({
     subdomain: 'www',
     nextItemButtonSelector: '#randomItem'
