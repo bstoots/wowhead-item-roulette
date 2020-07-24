@@ -10,6 +10,5 @@ routes = [
         "/item_id/{item_id:int}/exists",
         views.item_id_exists, name="item_id_exists"
     ),
-    Route("/{locale}", views.index, name="index"),
     Mount("/statics", static, name="statics"),
 ]
