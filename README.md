@@ -6,22 +6,11 @@ Over the years [Wowhead](http://www.wowhead.com) has cataloged tens of thousands
 
 ## Prerequisites
 
-* PHP 7.0 or newer
+* Python 3.8
+* Poetry
+* Docker
 
 ## Install
-
-### From Archive
-
-* Download from Github
-
-https://github.com/bstoots/wowhead-item-roulette/releases
-
-* Extract archive
-
-```
-# untar or unzip as required
-cd wowhead-item-roulette
-```
 
 ### From Source
 
@@ -32,26 +21,31 @@ git clone git@github.com:bstoots/wowhead-item-roulette.git
 cd wowhead-item-roulette
 ```
 
-* Install dependencies via Composer
+* Install dependencies via Poetry
 
 ```
-composer install
+poetry install
 ```
 
 ## Usage
 
-* Start the [built-in web server](http://php.net/manual/en/features.commandline.webserver.php)
+* Build the Docker image
 
 ```
-# wowhead-item-roulette/
-
-# To run on localhost only:
-php -S 127.0.0.1:8000 -t public/
-
-# -- OR --
-
-# To bind all interfaces (useful for mobile testing):
-php -S 0.0.0.0:8000 -t public/
+./wowhead_item_roulette/scripts/docker-build
 ```
 
-* Open a browser and navigate to: http://localhost:8000
+* Start the Docker container
+
+```
+./wowhead_item_roulette/scripts/docker-start
+```
+
+* When you're finish stop and remove the Docker container
+
+```
+./wowhead_item_roulette/scripts/docker-stop
+./wowhead_item_roulette/scripts/docker-remove
+```
+
+* Open a browser and navigate to: http://localhost
